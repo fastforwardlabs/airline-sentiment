@@ -94,7 +94,7 @@ class RNN(nn.Module):
         # hidden = [1, batch size, hid dim]
         assert torch.equal(output[-1, :, :], hidden.squeeze(0))
 
-        return self.fc(hidden.squeeze(0))
+        return self.fc(hidden.squeeze(0)), hidden
 
 
 INPUT_DIM = len(TEXT.vocab)
@@ -145,7 +145,9 @@ def train(model, iterator, optimizer, criterion):
     for batch in iterator:
         
         optimizer.zero_grad()
-        predictions = model(batch.text).squeeze(1)
+        #predictions = model(batch.text).squeeze(1)
+        predictions, _ = model(batch.text)
+        predictions = predictions.squeeze(1)
         loss = criterion(predictions, batch.label)
         acc = binary_accuracy(predictions, batch.label)
         loss.backward()
@@ -168,7 +170,9 @@ def evaluate(model, iterator, criterion):
    
         for batch in iterator:
 
-            predictions = model(batch.text).squeeze(1)
+            #predictions = model(batch.text).squeeze(1)
+            predictions, _ = model(batch.text)
+            predictions = predictions.squeeze(1)
             loss = criterion(predictions, batch.label)
             acc = binary_accuracy(predictions, batch.label)
             epoch_loss += loss.item()
@@ -228,8 +232,22 @@ def predict_sentiment(model, sentence):
     tensor = torch.LongTensor(indexed).to(device)
     tensor = tensor.unsqueeze(1)
     # print(tensor)
-    prediction = torch.sigmoid(model(tensor))
-    return prediction.item()
+    sentiment, hidden = model(tensor)
+    prediction = torch.sigmoid(sentiment)
+    return prediction.item(), hidden
 
 
 print(predict_sentiment(model, "you are horrible"))
+
+# use with formatted train/val/test predict_sentiment_from_dataset(model, next(train_data.text))
+
+def predict_sentiment_from_dataset(model, tokenized):
+    model.eval()
+    # tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
+    indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+    tensor = torch.LongTensor(indexed).to(device)
+    tensor = tensor.unsqueeze(1)
+    # print(tensor)
+    sentiment, hidden = model(tensor)
+    prediction = torch.sigmoid(sentiment)
+    return prediction.item(), hidden
