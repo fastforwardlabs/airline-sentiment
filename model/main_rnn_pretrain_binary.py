@@ -263,16 +263,19 @@ def predict_sentiment_from_dataset(model, tokenized):
 prediction_list = []
 embedding_list = []
 airline_list = []
+tweet_list = []
 for example in test_data:
     text = example.text  # this is tokenized
     airline = example.airline
     prediction, embedding = predict_sentiment_from_dataset(model, text)
+    tweet_list.append(text)
     prediction_list.append(prediction)
     embedding_list.append(embedding.data.numpy().squeeze(1))
     airline_list.append(airline)
 
 output_dict = {"prediction": prediction_list,
                "embedding": embedding_list,
+               "tweet": tweet_list,
                "airline": airline_list}
 outfile = open("frontend_data", 'wb')
 pickle.dump(output_dict, outfile, -1)
