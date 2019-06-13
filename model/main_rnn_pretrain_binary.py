@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
 import torch.nn as nn
+import pickle
 
 from torchtext import data
 from sklearn.model_selection import train_test_split
@@ -61,6 +62,11 @@ SENTIMENT.build_vocab(train_data)
 AIRLINE.build_vocab(train_data)
 
 print(TEXT.vocab.freqs.most_common(20))
+# save this - need for model prediction
+outfile = open("vocab_index.pkl", 'wb')
+pickle.dump(TEXT.vocab.stoi, outfile, -1)
+outfile.close()
+
 # check labels, 0 is negative, 1 is positive
 print(SENTIMENT.vocab.stoi)
 
@@ -251,3 +257,23 @@ def predict_sentiment_from_dataset(model, tokenized):
     sentiment, hidden = model(tensor)
     prediction = torch.sigmoid(sentiment)
     return prediction.item(), hidden
+
+
+# for andre
+prediction_list = []
+embedding_list = []
+airline_list = []
+for example in test_data:
+    text = example.text  # this is tokenized
+    airline = example.airline
+    prediction, embedding = predict_sentiment_from_dataset(model, text)
+    prediction_list.append(prediction)
+    embedding_list.append(embedding.data.numpy().squeeze(1))
+    airline_list.append(airline)
+
+output_dict = {"prediction": prediction_list,
+               "embedding": embedding_list,
+               "airline": airline_list}
+outfile = open("frontend_data", 'wb')
+pickle.dump(output_dict, outfile, -1)
+outfile.close()
