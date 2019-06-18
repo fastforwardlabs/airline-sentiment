@@ -1,0 +1,6 @@
+R
+node_modules
+*.pyc
+.*
+!.gitignore
+google_API_key
