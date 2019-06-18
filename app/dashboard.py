@@ -16,6 +16,7 @@ import numpy as np
 
 from dash.dependencies import Input, Output, State
 
+data_dir = '/home/cdsw/airline-sentiment/data'
 
 def value_to_hex_color(value, vmin=0, vmax=1):
     cmap = plt.cm.inferno
@@ -29,7 +30,7 @@ app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 app.config['suppress_callback_exceptions']=True
 
-DATA = '../data/umap_embedding.joblib'
+DATA = data_dir+'/umap_embedding.joblib'
 features = ['tweet', 'prediction', 'airline', 'umap_x', 'umap_y']
 
 cluster_data = joblib.load(DATA)

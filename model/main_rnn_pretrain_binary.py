@@ -6,7 +6,10 @@ import pickle
 from torchtext import data
 from sklearn.model_selection import train_test_split
 
-sentiments = pd.read_csv('../data/Tweets.csv')
+data_dir = '/home/cdsw/airline-sentiment/data/'
+model_dir = '/home/cdsw/airline-sentiment/model/'
+
+sentiments = pd.read_csv(data_dir+'/Tweets.csv')
 # use only not null text
 
 clean_df = sentiments[sentiments['text'].notnull() &
@@ -30,9 +33,9 @@ train_df, testval_df = train_test_split(final_df, test_size=0.3)
 test_df, val_df = train_test_split(testval_df, test_size=0.5)
 
 # convert df back to csv, with column names
-train_df.to_csv('../data/train.csv', index=False)
-test_df.to_csv('../data/test.csv', index=False)
-val_df.to_csv('../data/val.csv', index=False)
+train_df.to_csv(data_dir+'/train.csv', index=False)
+test_df.to_csv(data_dir+'/test.csv', index=False)
+val_df.to_csv(data_dir+'/val.csv', index=False)
 
 # load into torchtext
 ID = data.Field()
@@ -42,7 +45,7 @@ AIRLINE = data.Field()
 
 # access using batch.id, batch.text etc
 fields = [('id', ID), ('text', TEXT), ('airline', AIRLINE), ('label', SENTIMENT)]
-train_data, valid_data, test_data = data.TabularDataset.splits(path='../data',
+train_data, valid_data, test_data = data.TabularDataset.splits(path=data_dir,
                                                                train='train.csv',
                                                                validation='val.csv',
                                                                test='test.csv',
@@ -63,7 +66,7 @@ AIRLINE.build_vocab(train_data)
 
 print(TEXT.vocab.freqs.most_common(20))
 # save this - need for model prediction
-outfile = open("vocab_index.pkl", 'wb')
+outfile = open(model_dir+'vocab_index.pkl', 'wb')
 pickle.dump(TEXT.vocab.stoi, outfile, -1)
 outfile.close()
 
@@ -212,14 +215,14 @@ for epoch in range(N_EPOCHS):
     
     if valid_loss < best_valid_loss:
         best_valid_loss = valid_loss
-        torch.save(model.state_dict(), 'rnn_binary_pretrain_model.pt')
+        torch.save(model.state_dict(), model_dir+'/rnn_binary_pretrain_model.pt')
     
     print(f'Epoch: {epoch+1:02} | Epoch Time: {epoch_mins}m {epoch_secs}s')
     print(f'\tTrain Loss: {train_loss:.3f} | Train Acc: {train_acc*100:.2f}%')
     print(f'\t Val. Loss: {valid_loss:.3f} |  Val. Acc: {valid_acc*100:.2f}%')
 
 
-model.load_state_dict(torch.load('rnn_binary_pretrain_model.pt'))
+model.load_state_dict(torch.load(model_dir+'/rnn_binary_pretrain_model.pt'))
 
 test_loss, test_acc = evaluate(model, test_iterator, criterion)
 
@@ -277,6 +280,6 @@ output_dict = {"prediction": prediction_list,
                "embedding": embedding_list,
                "tweet": tweet_list,
                "airline": airline_list}
-outfile = open("frontend_data", 'wb')
+outfile = open(data_dir+'frontend_data', 'wb')
 pickle.dump(output_dict, outfile, -1)
 outfile.close()

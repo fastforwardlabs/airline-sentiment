@@ -5,6 +5,8 @@ import json
 import pickle
 nlp = spacy.load('en')
 
+data_dir = '/home/cdsw/airline-sentiment/data/'
+model_dir = '/home/cdsw/airline-sentiment/model/'
 
 # model
 class RNN(nn.Module):
@@ -33,7 +35,7 @@ INPUT_DIM = 10002
 EMBEDDING_DIM = 25
 HIDDEN_DIM = 256
 OUTPUT_DIM = 1
-vocab_index = pickle.load(open("vocab_index.pkl", 'rb'))
+vocab_index = pickle.load(open(model_dir+'/vocab_index.pkl', 'rb'))
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = RNN(INPUT_DIM, EMBEDDING_DIM, HIDDEN_DIM, OUTPUT_DIM)
 model.load_state_dict(torch.load('rnn_binary_pretrain_model.pt'))

@@ -44,3 +44,7 @@ traitlets==4.3.2
 urllib3==1.25.3
 wasabi==0.2.2
 wcwidth==0.1.7
+umap==0.1.1
+umap-learn==1.16.4
+holoviews==1.12.3
+bokeh==1.2.0
