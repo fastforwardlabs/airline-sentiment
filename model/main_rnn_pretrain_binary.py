@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
 import torch.nn as nn
+import pickle
 
 from torchtext import data
 from sklearn.model_selection import train_test_split
@@ -61,6 +62,11 @@ SENTIMENT.build_vocab(train_data)
 AIRLINE.build_vocab(train_data)
 
 print(TEXT.vocab.freqs.most_common(20))
+# save this - need for model prediction
+outfile = open("vocab_index.pkl", 'wb')
+pickle.dump(TEXT.vocab.stoi, outfile, -1)
+outfile.close()
+
 # check labels, 0 is negative, 1 is positive
 print(SENTIMENT.vocab.stoi)
 
@@ -94,7 +100,7 @@ class RNN(nn.Module):
         # hidden = [1, batch size, hid dim]
         assert torch.equal(output[-1, :, :], hidden.squeeze(0))
 
-        return self.fc(hidden.squeeze(0))
+        return self.fc(hidden.squeeze(0)), hidden
 
 
 INPUT_DIM = len(TEXT.vocab)
@@ -145,7 +151,9 @@ def train(model, iterator, optimizer, criterion):
     for batch in iterator:
         
         optimizer.zero_grad()
-        predictions = model(batch.text).squeeze(1)
+        #predictions = model(batch.text).squeeze(1)
+        predictions, _ = model(batch.text)
+        predictions = predictions.squeeze(1)
         loss = criterion(predictions, batch.label)
         acc = binary_accuracy(predictions, batch.label)
         loss.backward()
@@ -168,7 +176,9 @@ def evaluate(model, iterator, criterion):
    
         for batch in iterator:
 
-            predictions = model(batch.text).squeeze(1)
+            #predictions = model(batch.text).squeeze(1)
+            predictions, _ = model(batch.text)
+            predictions = predictions.squeeze(1)
             loss = criterion(predictions, batch.label)
             acc = binary_accuracy(predictions, batch.label)
             epoch_loss += loss.item()
@@ -228,8 +238,45 @@ def predict_sentiment(model, sentence):
     tensor = torch.LongTensor(indexed).to(device)
     tensor = tensor.unsqueeze(1)
     # print(tensor)
-    prediction = torch.sigmoid(model(tensor))
-    return prediction.item()
+    sentiment, hidden = model(tensor)
+    prediction = torch.sigmoid(sentiment)
+    return prediction.item(), hidden
 
 
 print(predict_sentiment(model, "you are horrible"))
+
+# use with formatted train/val/test predict_sentiment_from_dataset(model, next(train_data.text))
+
+def predict_sentiment_from_dataset(model, tokenized):
+    model.eval()
+    # tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
+    indexed = [TEXT.vocab.stoi[t] for t in tokenized]
+    tensor = torch.LongTensor(indexed).to(device)
+    tensor = tensor.unsqueeze(1)
+    # print(tensor)
+    sentiment, hidden = model(tensor)
+    prediction = torch.sigmoid(sentiment)
+    return prediction.item(), hidden
+
+
+# for andre
+prediction_list = []
+embedding_list = []
+airline_list = []
+tweet_list = []
+for example in test_data:
+    text = example.text  # this is tokenized
+    airline = example.airline
+    prediction, embedding = predict_sentiment_from_dataset(model, text)
+    tweet_list.append(text)
+    prediction_list.append(prediction)
+    embedding_list.append(embedding.data.numpy().squeeze(1))
+    airline_list.append(airline)
+
+output_dict = {"prediction": prediction_list,
+               "embedding": embedding_list,
+               "tweet": tweet_list,
+               "airline": airline_list}
+outfile = open("frontend_data", 'wb')
+pickle.dump(output_dict, outfile, -1)
+outfile.close()
