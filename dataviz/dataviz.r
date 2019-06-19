@@ -33,11 +33,22 @@ s + scale_fill_manual(values=cbPalette)
 
 as.data.frame(table(tweet_data['tweet_location'])) %>% 
   arrange(desc(Freq)) %>% 
-  filter(Freq > 50) 
+  filter(Freq > 50) %>% 
+  slice(2:100)
 
-leaflet() %>%
-  addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+leaflet(
+  top_locs_with_name %>% 
+  slice(2:100) %>%
+  group_by(long = lon,lat) %>% 
+  summarise(count = sum(n))
+  ) %>% 
+  addTiles() %>% 
+  addCircleMarkers(
+    radius = ~count/40,
+    stroke = FALSE, 
+    fillOpacity = 0.5
+  )
+
 
 ## Tokenize the words into a corpus
 data(stop_words)
