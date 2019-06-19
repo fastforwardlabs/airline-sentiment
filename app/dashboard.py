@@ -13,9 +13,12 @@ import plotly.graph_objs as go
 import dash_ui as dui
 import pandas as pd
 import numpy as np
+from IPython.display import HTML
+
 
 from dash.dependencies import Input, Output, State
 
+data_dir = '/home/cdsw/airline-sentiment/data'
 
 def value_to_hex_color(value, vmin=0, vmax=1):
     cmap = plt.cm.inferno
@@ -23,13 +26,13 @@ def value_to_hex_color(value, vmin=0, vmax=1):
     return matplotlib.colors.to_hex(cmap(norm([value][0])))
 
 
-app = dash.Dash()
+app = dash.Dash(__name__, static_folder='data')
 app.title = 'Cloudera CDSW 1.6 Demo'
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 app.config['suppress_callback_exceptions']=True
 
-DATA = '../data/umap_embedding.joblib'
+DATA = data_dir+'/umap_embedding.joblib'
 features = ['tweet', 'prediction', 'airline', 'umap_x', 'umap_y']
 
 cluster_data = joblib.load(DATA)
@@ -206,6 +209,8 @@ app.layout = html.Div(
     }
 )
 
+HTML("<a href='https://{}.{}'>URL</a>".format(os.environ['CDSW_ENGINE_ID'],os.environ['CDSW_DOMAIN']))
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port=8080, host='0.0.0.0')
+    #app.run_server(debug=True, host=os.environ['CDSW_IP_ADDRESS'], port=int(os.environ['CDSW_PUBLIC_PORT']))
