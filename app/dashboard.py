@@ -6,7 +6,7 @@ import time
 
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_table_experiments as dt
+import dash_table
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import plotly.graph_objs as go
@@ -209,7 +209,7 @@ app.layout = html.Div(
     }
 )
 
-HTML("<a href='https://{}.{}'>URL</a>".format(os.environ['CDSW_ENGINE_ID'],os.environ['CDSW_DOMAIN']))
+#HTML("<a href='https://{}.{}'>URL</a>".format(os.environ['CDSW_ENGINE_ID'],os.environ['CDSW_DOMAIN']))
 
 if __name__ == '__main__':
     app.run_server(debug=True, port=8080, host='0.0.0.0')
