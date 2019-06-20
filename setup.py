@@ -1,2 +1,2 @@
-!chmod 755 cdsw-build.sh
-!sh ./cdsw-build.sh
+!chmod 755 airline-sentiment/cdsw-build.sh
+!sh ./airline-sentiment/cdsw-build.sh
