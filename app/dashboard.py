@@ -6,7 +6,8 @@ import time
 
 import dash_core_components as dcc
 import dash_html_components as html
-import dash_table
+#import dash_table as dt
+import dash_table_experiments as dt
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import plotly.graph_objs as go
@@ -167,9 +168,9 @@ table = dt.DataTable(
     # Initialise the rows
     rows=cluster_data[['prediction', 'tweet', 'airline']].head(10).to_dict('records'),
     row_selectable=True,
-    filterable=True,
+    #filterable=True,
     sortable=True,
-    max_rows_in_viewport=10,
+    #max_rows_in_viewport=10,
     selected_row_indices=[],
     id='table',
 )
