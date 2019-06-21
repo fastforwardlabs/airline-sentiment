@@ -6,8 +6,8 @@ import time
 
 import dash_core_components as dcc
 import dash_html_components as html
-#import dash_table as dt
-import dash_table_experiments as dt
+import dash_table as dt
+#import dash_table_experiments as dt
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import plotly.graph_objs as go
@@ -99,14 +99,14 @@ grid.add_element(
 @app.callback(Output('save-table-textbox', 'children'),
              [Input('save-table-button', 'n_clicks')],
              [State('table', 'rows'),
-              State('table', 'selected_row_indices')]
+              State('table', 'selected_rows')]
               )
-def save_current_table(savebutton, tablerows, selected_row_indices):
+def save_current_table(savebutton, tablerows, selected_rows):
 
     table_df = pd.DataFrame(tablerows)
 
-    if selected_row_indices:
-        table_df = table_df.loc[selected_row_indices]
+    if selected_rows:
+        table_df = table_df.loc[selected_rows]
 
     if savebutton:
         filename = f'selection_{time.strftime("%Y%m%d-%H%M%S")}.csv'
@@ -165,13 +165,17 @@ def build_umap_graph(value):
 
 
 table = dt.DataTable(
-    # Initialise the rows
-    rows=cluster_data[['prediction', 'tweet', 'airline']].head(10).to_dict('records'),
-    row_selectable=True,
-    #filterable=True,
-    sortable=True,
-    #max_rows_in_viewport=10,
-    selected_row_indices=[],
+    rows=cluster_data[['prediction', 'tweet', 'airline']].to_dict('records'),
+    editable=True,
+    filter_action="native",
+    sort_action="native",
+    sort_mode="multi",
+    row_selectable="multi",
+    row_deletable=True,
+    selected_rows=[],
+    page_action="native",
+    page_current= 0,
+    page_size= 10,
     id='table',
 )
 
