@@ -8,8 +8,9 @@ CDSW_HOST3=`hostname -s | sed 's/\-4/\-6/g'`
 #cd airline-sentiment
 sudo docker build --network=host -t spacy:1 . -f Dockerfile
 sudo docker image save -o ./spacy.tar spacy:1
-sudo scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no spacy.tar $CDSW_HOST2:~
-sudo scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no spacy.tar $CDSW_HOST3:~
+sudo chmod 755 ./spacy.tar
+scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no spacy.tar $CDSW_HOST2:~
+scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no spacy.tar $CDSW_HOST3:~
 ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $CDSW_HOST2 "sudo docker load --input ~/spacy.tar"
 ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $CDSW_HOST3 "sudo docker load --input ~/spacy.tar"
 
