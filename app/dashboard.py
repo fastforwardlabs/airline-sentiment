@@ -1,3 +1,4 @@
+import os
 import dash
 import joblib
 import json
@@ -14,7 +15,6 @@ import plotly.graph_objs as go
 import dash_ui as dui
 import pandas as pd
 import numpy as np
-from IPython.display import HTML
 
 
 from dash.dependencies import Input, Output, State
@@ -27,8 +27,8 @@ def value_to_hex_color(value, vmin=0, vmax=1):
     return matplotlib.colors.to_hex(cmap(norm([value][0])))
 
 
-app = dash.Dash(__name__, static_folder='data')
-app.title = 'Cloudera CDSW 1.6 Demo'
+app = dash.Dash(__name__)
+app.title = 'Airline Sentiment'
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
 app.config['suppress_callback_exceptions']=True
@@ -165,16 +165,16 @@ def build_umap_graph(value):
 
 
 table = dt.DataTable(
-    rows=cluster_data[['prediction', 'tweet', 'airline']].to_dict('records'),
+    data=cluster_data[['prediction', 'tweet', 'airline']].to_dict('records'),
     editable=True,
     filter_action="native",
     sort_action="native",
     sort_mode="multi",
-    row_selectable="multi",
+    row_selectable="single",
     row_deletable=True,
     selected_rows=[],
     page_action="native",
-    page_current= 0,
+    #page_current= 0,
     page_size= 10,
     id='table',
 )
@@ -214,8 +214,6 @@ app.layout = html.Div(
     }
 )
 
-#HTML("<a href='https://{}.{}'>URL</a>".format(os.environ['CDSW_ENGINE_ID'],os.environ['CDSW_DOMAIN']))
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8080, host='0.0.0.0')
-    #app.run_server(debug=True, host=os.environ['CDSW_IP_ADDRESS'], port=int(os.environ['CDSW_PUBLIC_PORT']))
+    app.run_server(debug=True, host=os.environ['CDSW_IP_ADDRESS'], port=int(os.environ['CDSW_PUBLIC_PORT']))
