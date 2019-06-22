@@ -14,13 +14,13 @@ bokeh==1.2.0
 dash==1.0.0
 dash_ui==0.4.0
 ipython==7.5.0
+requests>=2.14.0
 
 #maybe needed
 #appnope==0.1.0
 #certifi==2019.3.9
 #chardet==3.0.4 #upgrade from chardet==2.3.0 in v8
 #pandas==0.24.2 #upgrade from pandas==0.20.0 in v8
-#requests==2.22.0 #upgrade from requests==2.13.0 in v8
 
 #deps for ipython
 #ipython==7.5.0
