@@ -100,7 +100,8 @@ grid.add_element(
              [Input('save-table-button', 'n_clicks')],
              [State('table', 'rows'),
               State('table', 'selected_rows')]
-              )
+)
+
 def save_current_table(savebutton, tablerows, selected_rows):
 
     table_df = pd.DataFrame(tablerows)
@@ -170,8 +171,8 @@ table = dt.DataTable(
     filter_action="native",
     sort_action="native",
     sort_mode="multi",
-    row_selectable="single",
-    row_deletable=True,
+    #row_selectable="single",
+    #row_deletable=True,
     selected_rows=[],
     page_action="native",
     #page_current= 0,
