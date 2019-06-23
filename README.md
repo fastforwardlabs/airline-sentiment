@@ -9,7 +9,6 @@ The purpose of this project is to pilot development of customer sentiment analys
 4. Dependent applications: 
 ...
 
-
 ## Team Members
 - Project Manager: Bethann Noble
 - Data Engineer: Michael Gregory
@@ -18,6 +17,11 @@ The purpose of this project is to pilot development of customer sentiment analys
 - Dev Ops: Sam Indyawan
 - App Dev: Andre Loose
 - Code/Risk Review: Ayushmaan Kumar
+
+## Project Phases
+- Phase 1: Basic end-to-end workflow set-up.
+- Phase 2: Set-up streaming ingest and nightly re-training.
+- Phase 3: Automatic notification to LOB of sentiment change at threshold.
 
 
 MD cheat sheet https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
