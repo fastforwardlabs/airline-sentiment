@@ -1,10 +1,13 @@
-//Nightly data processing to read from raw files make some simple transformations and output as csv for model fitting
+//Project: Airline Sentiment 
+//Author: Michael Gregory
+//Description: Nightly data processing to
+// - read from downloaded, data-stamped raw files
+// - anonymize the tweeter's name
+// - output as csv for model fitting
+
 import sys.process._
 
-//download the data and put to HDFS
-//"curl -o iris.txt https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data" !
-//"hdfs dfs -put -f iris.txt" !
-//"rm iris.txt" !
+val hdfsDataDir = "hdfs:///tmp/airline-sentiment/incoming/"
 
 import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -12,8 +15,8 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 val spark = SparkSession.builder().getOrCreate()
 import spark.implicits._
     
-val rawInput = "hdfs:///user/demo/iris.txt"
-val csvInput = "hdfs:///user/demo/iris.csv"
+val rawInput = "hdfs:///tmp/airline-sentiment/incoming/*"
+val csvInput = "hdfs:///tmp/airline-sentiment/Tweets.csv"
     
 spark.read.textFile(rawInput).
   map { line =>
@@ -25,8 +28,5 @@ spark.read.textFile(rawInput).
     }.
   repartition(1).
   write.text(csvInput)
-
-"hdfs dfs -get -f iris.csv/*.txt iris.csv" !
-"hdfs dfs -rmr -f iris.csv iris.txt" !
 
 spark.stop()

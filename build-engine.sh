@@ -1,6 +1,6 @@
 #!/bin/sh
 
-CLUSTER_NAME='cdsw16-launch-demo-'
+CLUSTER_NAME=`hostname -s | rev | cut -d'-' -f 2- | rev`-
 WORKERS=`echo {5..8}`
 
 
