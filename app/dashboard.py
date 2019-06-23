@@ -31,7 +31,7 @@ app = dash.Dash(__name__)
 app.title = 'Airline Sentiment'
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
-app.config['suppress_callback_exceptions']=True
+#app.config['suppress_callback_exceptions']=True
 
 DATA = data_dir+'/umap_embedding.joblib'
 features = ['tweet', 'prediction', 'airline', 'umap_x', 'umap_y']
@@ -40,6 +40,16 @@ cluster_data = joblib.load(DATA)
 cluster_data = cluster_data[features]
 
 cluster_data['marker_color'] = cluster_data['prediction'].apply(lambda x: value_to_hex_color(x)) 
+
+app.layout = html.Div(
+    dui.Layout(
+        grid=grid,
+    ),
+    style={
+        'height': '100vh',
+        'width': '100vw'
+    }
+)
 
 
 # CSS grid layout for easy positioning
@@ -96,11 +106,11 @@ grid.add_element(
 )
 
 
-@app.callback(Output('save-table-textbox', 'children'),
-             [Input('save-table-button', 'n_clicks')],
-             [State('table', 'rows'),
-              State('table', 'selected_rows')]
-)
+#@app.callback(Output('save-table-textbox', 'children'),
+#             [Input('save-table-button', 'n_clicks')],
+#             [State('table', 'rows'),
+#              State('table', 'selected_rows')]
+#)
 
 def save_current_table(savebutton, tablerows, selected_rows):
 
@@ -175,7 +185,7 @@ table = dt.DataTable(
     #row_deletable=True,
     selected_rows=[],
     page_action="native",
-    #page_current= 0,
+    page_current= 0,
     page_size= 10,
     id='table',
 )
@@ -191,29 +201,20 @@ grid.add_element(
 
 
 @app.callback(
-    Output('table', 'rows'),
+    Output('table', 'data'),
     [Input('umap', 'selectedData'),
      ])
-def build_table(selected_data):
+def build_table(selectedData):
    
-    if selected_data is None:
+    if selectedData is None:
         data = cluster_data[['prediction', 'tweet', 'airline']].head(10).copy()
     else:
-        selected_indices = [p['pointIndex'] for p in selected_data['points']]
+        print(selectedData)
+        selected_indices = [p['pointIndex'] for p in selectedData['points']]
         data = cluster_data[['prediction', 'tweet', 'airline']].iloc[selected_indices].copy()
     
     return data.to_dict('records')
     
-
-app.layout = html.Div(
-    dui.Layout(
-        grid=grid,
-    ),
-    style={
-        'height': '100vh',
-        'width': '100vw'
-    }
-)
 
 
 if __name__ == '__main__':
