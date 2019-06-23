@@ -1,1 +1,2 @@
-install.packages("ggmap")
+install.packages(c("ggmap", "leaflet", "tidytext", "wordcloud"))
+
