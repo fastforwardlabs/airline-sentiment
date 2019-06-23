@@ -71,6 +71,7 @@ print(TEXT.vocab.freqs.most_common(20))
 outfile = open(model_dir+'vocab_index.pkl', 'wb')
 pickle.dump(TEXT.vocab.stoi, outfile, -1)
 outfile.close()
+cdsw.track_file(model_dir+'vocab_index.pkl')
 
 # check labels, 0 is negative, 1 is positive
 print(SENTIMENT.vocab.stoi)
