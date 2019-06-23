@@ -52,3 +52,6 @@ def predict_sentiment_get_embedding(model, sentence):
     prediction = torch.sigmoid(sentiment)
     return json.dumps({'sentiment': prediction.item(),
                        'embedding': hidden.data.tolist()})
+
+#test
+#print(predict_sentiment(model, "you are horrible"))
