@@ -41,16 +41,6 @@ cluster_data = cluster_data[features]
 
 cluster_data['marker_color'] = cluster_data['prediction'].apply(lambda x: value_to_hex_color(x)) 
 
-app.layout = html.Div(
-    dui.Layout(
-        grid=grid,
-    ),
-    style={
-        'height': '100vh',
-        'width': '100vw'
-    }
-)
-
 
 # CSS grid layout for easy positioning
 grid = dui.Grid(
@@ -60,6 +50,15 @@ grid = dui.Grid(
     grid_padding=5
 )
 
+app.layout = html.Div(
+    dui.Layout(
+        grid=grid,
+    ),
+    style={
+        'height': '100vh',
+        'width': '100vw'
+    }
+)
 
 grid.add_element(
     col=6,
