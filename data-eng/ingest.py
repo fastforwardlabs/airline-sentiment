@@ -3,3 +3,4 @@
 !curl https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data | hdfs dfs -put - iris-`date-I`.txt
 
 #https://www.kaggle.com/crowdflower/twitter-airline-sentiment/downloads/Tweets.csv
+#s3://ml-field/demo/airline-sentiment/Tweets.csv
