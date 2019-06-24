@@ -14,7 +14,7 @@ import pandas as pd
 data_dir = '/home/cdsw/airline-sentiment/data/'
 model_dir = '/home/cdsw/airline-sentiment/model/'
 
-with open(data_dir+'/frontend_data', 'rb') as f:
+with open(data_dir+'../../frontend_data', 'rb') as f:
     data = pickle.load(f)
 
 data.keys()

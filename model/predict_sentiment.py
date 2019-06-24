@@ -3,10 +3,23 @@ import torch.nn as nn
 import spacy
 import json
 import pickle
+import os
 nlp = spacy.load('en')
 
-data_dir = '/home/cdsw/airline-sentiment/data/'
 model_dir = '/home/cdsw/airline-sentiment/model/'
+
+#first look for vocab that came from experiments
+if os.path.exists('vocab_index.pkl'):
+  vocab_file_path = 'vocab_index.pkl' 
+else:
+  vocab_file_path = model_dir+'/vocab_index.pkl'
+
+#first look for model that came from experiments
+if os.path.exists('rnn_binary_pretrain_model.pt'):
+  model_file_path = 'rnn_binary_pretrain_model.pt'
+else:
+  model_file_path = model_dir+'/rnn_binary_pretrain_model.pt'
+
 
 # model
 class RNN(nn.Module):
@@ -35,13 +48,13 @@ INPUT_DIM = 10002
 EMBEDDING_DIM = 25
 HIDDEN_DIM = 256
 OUTPUT_DIM = 1
-vocab_index = pickle.load(open(model_dir+'/vocab_index.pkl', 'rb'))
+vocab_index = pickle.load(open(vocab_file_path, 'rb'))
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = RNN(INPUT_DIM, EMBEDDING_DIM, HIDDEN_DIM, OUTPUT_DIM)
-model.load_state_dict(torch.load('rnn_binary_pretrain_model.pt'))
+model.load_state_dict(torch.load(model_file_path))
 
 
-def predict_sentiment_get_embedding(model, sentence):
+def predict_sentiment_get_embedding(sentence):
     model.eval()
     tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
     indexed = [vocab_index[t] for t in tokenized]
@@ -53,5 +66,18 @@ def predict_sentiment_get_embedding(model, sentence):
     return json.dumps({'sentiment': prediction.item(),
                        'embedding': hidden.data.tolist()})
 
+  def predict_sentiment(sentence):
+    model.eval()
+    tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
+    indexed = [vocab_index[t] for t in tokenized]
+    tensor = torch.LongTensor(indexed).to(device)
+    tensor = tensor.unsqueeze(1)
+    # print(tensor)
+    sentiment, hidden = model(tensor)
+    prediction = torch.sigmoid(sentiment)
+    return round(prediction.item(), 5)
+  
+  
 #test
-#print(predict_sentiment(model, "you are horrible"))
+#print(predict_sentiment("you are horrible"))
+
