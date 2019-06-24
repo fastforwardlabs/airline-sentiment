@@ -5,8 +5,8 @@ The purpose of this project is to pilot development of customer sentiment analys
 ## Details
 1. Business Objective: Ready the team and process for deploying business-specific sentiment analysis capabilities using a pilot project to organize, exercise and document team workflow and skills required for future projects.   
 2. LOB: **Marketing**
-3. Data Source(s): 
-4. Dependent applications: 
+3. Data Source(s): airline-sentiment/data/Tweets.csv (airline sentiment csv files)
+4. Dependent applications: TBD
 ...
 
 ## Team Members
@@ -14,9 +14,8 @@ The purpose of this project is to pilot development of customer sentiment analys
 - Data Engineer: Michael Gregory
 - Data Scientist: Jeff Fletcher
 - Modeller: Shioulin Sam
-- Dev Ops: Sam Indyawan
+- Dev Ops: Ayushmaan Kumar
 - App Dev: Andre Loose
-- Code/Risk Review: Ayushmaan Kumar
 
 ## Project Phases
 - Phase 1: Basic end-to-end workflow set-up.
