@@ -8,8 +8,8 @@ import cdsw
 from torchtext import data
 from sklearn.model_selection import train_test_split
 
-data_dir = '/home/cdsw/airline-sentiment/data/'
-model_dir = '/home/cdsw/airline-sentiment/model/'
+data_dir = '/home/cdsw/data/'
+model_dir = '/home/cdsw/model/'
 
 sentiments = pd.read_csv(data_dir+'/Tweets.csv')
 # use only not null text

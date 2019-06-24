@@ -19,7 +19,7 @@ import numpy as np
 
 from dash.dependencies import Input, Output, State
 
-data_dir = '/home/cdsw/airline-sentiment/data'
+data_dir = '/home/cdsw/data'
 
 def value_to_hex_color(value, vmin=0, vmax=1):
     cmap = plt.cm.inferno

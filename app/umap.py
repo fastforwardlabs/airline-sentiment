@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 
 #hv.extension('bokeh')
-data_dir = '/home/cdsw/airline-sentiment/data/'
-model_dir = '/home/cdsw/airline-sentiment/model/'
+data_dir = '/home/cdsw/data/'
+model_dir = '/home/cdsw/model/'
 
 with open(data_dir+'../../frontend_data', 'rb') as f:
     data = pickle.load(f)
