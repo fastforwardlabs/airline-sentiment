@@ -175,13 +175,12 @@ def build_umap_graph(value):
 
 
 table = dt.DataTable(
+    columns=[{"name": i, "id": i} for i in cluster_data[['prediction', 'tweet', 'airline']].columns],
     data=cluster_data[['prediction', 'tweet', 'airline']].to_dict('records'),
     editable=True,
     filter_action="native",
     sort_action="native",
     sort_mode="multi",
-    #row_selectable="single",
-    #row_deletable=True,
     selected_rows=[],
     page_action="native",
     page_current= 0,
