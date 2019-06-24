@@ -1,1 +1,1 @@
-!ipython3 airline-sentiment/app/dashboard.py
+!ipython3 app/dashboard.py
