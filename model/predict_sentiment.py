@@ -54,7 +54,8 @@ model = RNN(INPUT_DIM, EMBEDDING_DIM, HIDDEN_DIM, OUTPUT_DIM)
 model.load_state_dict(torch.load(model_file_path))
 
 
-def predict_sentiment_get_embedding(sentence):
+def predict_sentiment_get_embedding(args):
+    sentence = args.get('sentence')
     model.eval()
     tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
     indexed = [vocab_index[t] for t in tokenized]
@@ -66,7 +67,8 @@ def predict_sentiment_get_embedding(sentence):
     return json.dumps({'sentiment': prediction.item(),
                        'embedding': hidden.data.tolist()})
 
-def predict_sentiment(sentence):
+def predict_sentiment(args):
+    sentence = args.get('sentence')
     model.eval()
     tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
     indexed = [vocab_index[t] for t in tokenized]
@@ -79,5 +81,6 @@ def predict_sentiment(sentence):
   
   
 #test
-#print(predict_sentiment("you are horrible"))
+#x={"sentence" : "you are horrible"}
+#predict_sentiment(x)
 
