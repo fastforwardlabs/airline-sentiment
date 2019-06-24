@@ -6,7 +6,7 @@ The purpose of this project is to pilot development of customer sentiment analys
 1. Business Objective: Ready the team and process for deploying business-specific sentiment analysis capabilities using a pilot project to organize, exercise and document team workflow and skills required for future projects.   
 2. LOB: **Marketing**
 3. Data Source(s): 
-4. Dependent applications: 
+4. Dependent applications: TBD
 ...
 
 ## Team Members
