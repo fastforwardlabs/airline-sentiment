@@ -12,9 +12,15 @@ import pandas as pd
 
 #hv.extension('bokeh')
 data_dir = '/home/cdsw/data/'
-model_dir = '/home/cdsw/model/'
 
-with open(data_dir+'../../frontend_data', 'rb') as f:
+#first look for frontend that came from experiments
+if os.path.exists('/home/cdsw/frontend_data'):
+  frontend_file_path = '/home/cdsw/frontend_data' 
+else:
+  frontend_file_path = data_dir+'/frontend_data'
+
+
+with open(frontend_file_path, 'rb') as f:
     data = pickle.load(f)
 
 data.keys()
