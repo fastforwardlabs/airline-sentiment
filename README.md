@@ -14,9 +14,8 @@ The purpose of this project is to pilot development of customer sentiment analys
 - Data Engineer: Michael Gregory
 - Data Scientist: Jeff Fletcher
 - Modeller: Shioulin Sam
-- Dev Ops: Sam Indyawan
+- Dev Ops: TBD
 - App Dev: Andre Loose
-- Code/Risk Review: Ayushmaan Kumar
 
 ## Project Phases
 - Phase 1: Basic end-to-end workflow set-up.
