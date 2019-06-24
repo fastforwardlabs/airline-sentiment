@@ -9,14 +9,14 @@ nlp = spacy.load('en')
 model_dir = '/home/cdsw/airline-sentiment/model/'
 
 #first look for vocab that came from experiments
-if os.path.exists('vocab_index.pkl'):
-  vocab_file_path = 'vocab_index.pkl' 
+if os.path.exists('/home/cdsw/vocab_index.pkl'):
+  vocab_file_path = '/home/cdsw/vocab_index.pkl' 
 else:
   vocab_file_path = model_dir+'/vocab_index.pkl'
 
 #first look for model that came from experiments
-if os.path.exists('rnn_binary_pretrain_model.pt'):
-  model_file_path = 'rnn_binary_pretrain_model.pt'
+if os.path.exists('/home/cdsw/rnn_binary_pretrain_model.pt'):
+  model_file_path = '/home/cdsw/rnn_binary_pretrain_model.pt'
 else:
   model_file_path = model_dir+'/rnn_binary_pretrain_model.pt'
 
@@ -66,7 +66,7 @@ def predict_sentiment_get_embedding(sentence):
     return json.dumps({'sentiment': prediction.item(),
                        'embedding': hidden.data.tolist()})
 
-  def predict_sentiment(sentence):
+def predict_sentiment(sentence):
     model.eval()
     tokenized = [tok.text for tok in nlp.tokenizer(sentence)]
     indexed = [vocab_index[t] for t in tokenized]
