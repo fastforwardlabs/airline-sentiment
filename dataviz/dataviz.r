@@ -1,4 +1,4 @@
-library(quanteda)
+
 library(dplyr)
 library(ggmap)
 library(stringr)
@@ -31,6 +31,8 @@ s + scale_fill_manual(values=cbPalette)
 
 ## Plot number of tweets by location
 
+load("top_locations.rda")
+
 as.data.frame(table(tweet_data['tweet_location'])) %>% 
   arrange(desc(Freq)) %>% 
   filter(Freq > 50) %>% 
@@ -52,10 +54,6 @@ leaflet(
 
 ## Tokenize the words into a corpus
 data(stop_words)
-
-actual_tweets <- tokens(as.character(tweet_data$text))
-
-all_tweets <- paste(as.character(tweet_data$text),collapse = " ")
 
 airlines = tibble(text = c("united","usairways","americanair","southwestair","jetblue","virginamerica"))
 

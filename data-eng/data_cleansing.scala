@@ -6,7 +6,7 @@
 // - output as csv for model fitting
 
 
-val hdfsDataDir = "hdfs:///tmp/airline-sentiment/incoming/"
+//val hdfsDataDir = "hdfs:///tmp/airline-sentiment/incoming/"
 
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql._
