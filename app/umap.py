@@ -45,4 +45,4 @@ data_df.head()
 
 data_df['tweet'] = data_df['tweet'].apply(lambda t: " ".join(t))
 
-joblib.dump(data_df, data_dir+'/umap_embedding_2.joblib', compress=True)
+joblib.dump(data_df, data_dir+'/umap_embedding.joblib', compress=True)
