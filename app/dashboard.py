@@ -8,7 +8,6 @@ import time
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
-#import dash_table_experiments as dt
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import plotly.graph_objs as go
@@ -61,7 +60,7 @@ app.layout = html.Div(
 )
 
 grid.add_element(
-    col=6,
+    col=2,
     row=1,
     width=6,
     height=6,
@@ -69,7 +68,7 @@ grid.add_element(
 )
 
 grid.add_element(
-    col=7,
+    col=11,
     row=10,
     width=1,
     height=1,
@@ -77,39 +76,17 @@ grid.add_element(
         id='model-select',
         options=[
             {'label': 'all', 'value': 0},
-            {'label': 'United', 'value': 1},
-            {'label': 'US Airways', 'value': 2},
-            {'label': 'American', 'value': 3},
-            {'label': 'Southwest', 'value': 4},
-            {'label': 'Delta', 'value': 5},
-            {'label': 'Virgin America', 'value': 6},
+            {'label': 'restricted', 'value': 1},
+            #{'label': 'US Airways', 'value': 2},
+            #{'label': 'American', 'value': 3},
+            #{'label': 'Southwest', 'value': 4},
+            #{'label': 'Delta', 'value': 5},
+            #{'label': 'Virgin America', 'value': 6},
     ],
     value=0,
     ),
 )
 
-grid.add_element(
-    col=7,
-    row=1,
-    width=1,
-    height=1,
-    element=html.Button('save table', id='save-table-button'),
-)
-
-grid.add_element(
-    col=7,
-    row=2,
-    width=1,
-    height=1,
-    element=html.P(id='save-table-textbox'),
-)
-
-
-#@app.callback(Output('save-table-textbox', 'children'),
-#             [Input('save-table-button', 'n_clicks')],
-#             [State('table', 'rows'),
-#              State('table', 'selected_rows')]
-#)
 
 def save_current_table(savebutton, tablerows, selected_rows):
 
@@ -124,9 +101,8 @@ def save_current_table(savebutton, tablerows, selected_rows):
         return f"Current selection saved to {filename}."  
   
   
-@app.callback(
-    Output('umap', 'figure'),
-    [Input('model-select', 'value'),
+@app.callback(Output('umap', 'figure'),
+     [Input('model-select', 'value'),
      ])
 def build_umap_graph(value):
 
@@ -177,7 +153,7 @@ def build_umap_graph(value):
 table = dt.DataTable(
     columns=[{"name": i, "id": i} for i in cluster_data[['prediction', 'tweet', 'airline']].columns],
     data=cluster_data[['prediction', 'tweet', 'airline']].to_dict('records'),
-    editable=True,
+    #editable=True,
     filter_action="native",
     sort_action="native",
     sort_mode="multi",
@@ -205,7 +181,7 @@ grid.add_element(
 def build_table(selectedData):
    
     if selectedData is None:
-        data = cluster_data[['prediction', 'tweet', 'airline']].head(10).copy()
+        data = cluster_data[['prediction', 'tweet', 'airline']].copy()
     else:
         print(selectedData)
         selected_indices = [p['pointIndex'] for p in selectedData['points']]

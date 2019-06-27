@@ -19,7 +19,7 @@ The purpose of this project is to pilot development of customer sentiment analys
 
 ## Project Phases
 - Phase 1: Basic end-to-end workflow set-up.
-  -PM Signoff: June 24, 2019
+  - PM Signoff 
 - Phase 2: Set-up streaming ingest and nightly re-training.
 - Phase 3: Automatic notification to LOB of sentiment change at threshold.
 
@@ -59,4 +59,5 @@ The output is the classifier and the vocabulary as pickle files.
 
 ## Dev Ops
 
-Used for prediction function of sentiment embeddings and actual value of the sentiment.
+Model deployed and tested using PyCharm. 
+Two prediction functions  a) sentiment embeddings and b) actual value of the sentiment.

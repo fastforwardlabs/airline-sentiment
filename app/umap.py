@@ -7,18 +7,17 @@ import warnings
 warnings.simplefilter('ignore')
 
 import numpy as np
-#import holoviews as hv
+import holoviews as hv
 import pandas as pd
 
 #hv.extension('bokeh')
+
 data_dir = '/home/cdsw/data/'
 
-#first look for frontend that came from experiments
 if os.path.exists('/home/cdsw/frontend_data'):
   frontend_file_path = '/home/cdsw/frontend_data' 
 else:
   frontend_file_path = data_dir+'/frontend_data'
-
 
 with open(frontend_file_path, 'rb') as f:
     data = pickle.load(f)
@@ -30,30 +29,20 @@ len(data['prediction'])
 data_df = pd.DataFrame(data)
 data_df.head()
 
-#data_df.airline.value_counts()
-
 np.shape(data['embedding'][0])
 
 X = np.vstack(data_df['embedding'].values)
 
 np.shape(X)
 
-#get_ipython().run_cell_magic('time', '', "\nembedding = umap.UMAP(n_components=2,\n                      n_neighbors=15,\n                      min_dist=0.1,\n                      metric='cosine').fit_transform(X)")
-
-embedding = umap.UMAP(n_components=2, n_neighbors=15, min_dist=0.1, metric='cosine').fit_transform(X)
+embedding = umap.UMAP(n_components=2, n_neighbors=25, min_dist=0.2, metric='cosine').fit_transform(X)
 
 data_df['umap_x'], data_df['umap_y'] = embedding[:, 0], embedding[:, 1]
 
-#get_ipython().run_cell_magic('opts', "Scatter [width=500 height=500] (color='prediction')", 
-#                             "hv.Scatter(data_df, kdims=['umap_x', 'umap_y'], vdims=['prediction'])")
-
 #hv.Scatter(data_df, kdims=['umap_x', 'umap_y'], vdims=['prediction'])
-
-#data_df['tweet'] = [''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-#                    for i in range(0, len(data_df))]
 
 data_df.head()
 
 data_df['tweet'] = data_df['tweet'].apply(lambda t: " ".join(t))
 
-joblib.dump(data_df, data_dir+'/umap_embedding.joblib', compress=True)
+joblib.dump(data_df, data_dir+'/umap_embedding_2.joblib', compress=True)
