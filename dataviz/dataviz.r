@@ -31,7 +31,7 @@ s + scale_fill_manual(values=cbPalette)
 
 ## Plot number of tweets by location
 
-load("top_locations.rda")
+load("dataviz/top_locations.rda")
 
 as.data.frame(table(tweet_data['tweet_location'])) %>% 
   arrange(desc(Freq)) %>% 
