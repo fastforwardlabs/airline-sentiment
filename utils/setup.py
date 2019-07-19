@@ -4,7 +4,7 @@
 
 ##NOTE: You need a session with at least 8GB memory to run this
 
-#!hdfs dfs -mkdir /tmp/airline-sentiment
+!hdfs dfs -mkdir /tmp/airline-sentiment
 !mkdir R
 !mv utils/cdsw-build.sh .
 !chmod 755 cdsw-build.sh
