@@ -192,4 +192,4 @@ def build_table(selectedData):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, host=os.environ['CDSW_IP_ADDRESS'], port=int(os.environ['CDSW_PUBLIC_PORT']))
+    app.run_server(debug=True, host='127.0.0.1', port=8100)
