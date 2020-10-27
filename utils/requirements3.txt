@@ -34,7 +34,7 @@ bokeh==1.2.0
 cdsw==1.0.0
 cffi==1.12.3
 Click==7.0
-cryptography==2.7
+cryptography==3.2
 cycler==0.10.0
 cymem==2.0.2
 Cython==0.25.2
