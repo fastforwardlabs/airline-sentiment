@@ -112,7 +112,7 @@ python-dateutil==2.8.0
 #python-debian==0.1.27
 pytz==2019.1
 pyviz-comms==0.7.2
-PyYAML==5.1.1
+PyYAML==5.4
 pyzmq==18.0.1
 qtconsole==4.5.1
 requests-file==1.4.3
